@@ -25,6 +25,6 @@ app.post("/api", async (req, res) => {
     }
 });
 
-app.listen(4400, () => {
+app.listen(8000, () => {
   console.log("Server is running on port 5000");
 });
