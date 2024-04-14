@@ -1,37 +1,28 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
+const bodyParser = require('body-parser');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.get("/", (req, res) => {
-  console.log(req);
-});
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
 app.post("/api", async (req, res) => {
-  
     console.log('/api received');
     const payload = req.body;
-    const requestBody = {
-        "prompt":"about college love",
-        "length":"Short",
-        "tone": "melancholic",
-        "style": "freestyle"
+    console.log(payload);
+   
+    
+    try {
+        const response = await axios.post('https://test-ai.aadarshkannan111.workers.dev/', payload);
+        console.log(response.data);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
     }
-    
-    fetch('https://test-ai.aadarshkannan111.workers.dev/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-    
-
 });
 
 app.listen(5000, () => {
